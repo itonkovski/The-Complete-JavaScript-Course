@@ -82,6 +82,7 @@ const description = country + ' is in ' + continent + ', and its ' + population 
 console.log(description);
 */
 
+/*
 // Coding Challenge #1
 // Mark and John are trying to compare their BMI (Body Mass Index), which is
 // calculated using the formula:
@@ -98,7 +99,7 @@ console.log(description);
 // m tall.
 // § Data 2: Marks weights 95 kg and is 1.88 m tall. John weights 85 kg and is 1.76
 // m tall.
-// GOOD LUCK 
+// GOOD LUCK
 
 const weightMark = 78;
 const heightMark = 1.69;
@@ -112,3 +113,70 @@ const markHigherBMI = BMIMark > BMIJohn;
 
 console.log(BMIMark, BMIJohn);
 console.log(markHigherBMI);
+*/
+
+/*
+// LECTURE: Strings and Template Literals
+// 1. Recreate the 'description' variable from the last assignment, this time
+// using the template literal syntax
+
+let population = 5;
+const country = 'Bulgaria';
+const continent = 'Europe';
+const language = 'Bulgarian';
+
+const description = `${country} is situated in ${continent},has a population of ${population} milion people and the official language is ${language}.`;
+
+console.log(description);
+*/
+
+/*
+// LECTURE: Taking Decisions: if / else Statements
+// 1. If your country's population is greater that 33 million, log a string like this to the
+// console: 'Portugal's population is above average'. Otherwise, log a string like
+// 'Portugal's population is 22 million below average' (the 22 is the average of 33
+// minus the country's population)
+// 2. After checking the result, change the population temporarily to 13 and then to
+// 130. See the different results, and set the population back to original
+
+let population = 5;
+const country = 'Bulgaria';
+
+if (population > 33) {
+    console.log(`${country}'s population is above average.`);
+}
+else {
+    console.log(`${country}'s population is ${33 - population} million below average'`);
+}
+*/
+
+// Coding Challenge #2
+// Use the BMI example from Challenge #1, and the code you already wrote, and
+// improve it.
+// Your tasks:
+// 1. Print a nice output to the console, saying who has the higher BMI. The message
+// is either "Mark's BMI is higher than John's!" or "John's BMI is higher than Mark's!"
+// 2. Use a template literal to include the BMI values in the outputs. Example: "Mark's
+// BMI (28.3) is higher than John's (23.9)!"
+// Hint: Use an if/else statement �
+// GOOD LUCK � 
+
+const weightMark = 78;
+const heightMark = 1.69;
+const BMIMark = weightMark / heightMark ** 2;
+
+const weightJohn = 92;
+const heightJohn = 1.95;
+const BMIJohn = weightJohn / (heightJohn * heightJohn);
+
+const markHigherBMI = BMIMark > BMIJohn;
+
+console.log(BMIMark, BMIJohn);
+console.log(markHigherBMI);
+
+if (BMIMark > BMIJohn) {
+    console.log(`Mark's BMI(${BMIMark.toFixed(2)}) is higher than John's(${BMIJohn.toFixed(2)})!`)
+}
+else {
+    console.log(`John's BMI(${BMIJohn.toFixed(2)}) is higher than Mark's(${BMIMark.toFixed(2)})!`)
+}
