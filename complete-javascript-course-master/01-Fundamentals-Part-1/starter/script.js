@@ -150,6 +150,7 @@ else {
 }
 */
 
+/*
 // Coding Challenge #2
 // Use the BMI example from Challenge #1, and the code you already wrote, and
 // improve it.
@@ -159,15 +160,16 @@ else {
 // 2. Use a template literal to include the BMI values in the outputs. Example: "Mark's
 // BMI (28.3) is higher than John's (23.9)!"
 // Hint: Use an if/else statement �
-// GOOD LUCK � 
+// GOOD LUCK �
 
+/*
 const weightMark = 78;
 const heightMark = 1.69;
-const BMIMark = weightMark / heightMark ** 2;
+const BMIMark = (weightMark / heightMark ** 2).toFixed(2);
 
 const weightJohn = 92;
 const heightJohn = 1.95;
-const BMIJohn = weightJohn / (heightJohn * heightJohn);
+const BMIJohn = (weightJohn / (heightJohn * heightJohn)).toFixed(2);
 
 const markHigherBMI = BMIMark > BMIJohn;
 
@@ -175,8 +177,113 @@ console.log(BMIMark, BMIJohn);
 console.log(markHigherBMI);
 
 if (BMIMark > BMIJohn) {
-    console.log(`Mark's BMI(${BMIMark.toFixed(2)}) is higher than John's(${BMIJohn.toFixed(2)})!`)
+    console.log(`Mark's BMI(${BMIMark}) is higher than John's(${BMIJohn})!`)
 }
 else {
-    console.log(`John's BMI(${BMIJohn.toFixed(2)}) is higher than Mark's(${BMIMark.toFixed(2)})!`)
+    console.log(`John's BMI(${BMIJohn}) is higher than Mark's(${BMIMark})!`)
+}
+*/
+
+/*
+// LECTURE: Equality Operators: == vs. ===
+// 1. Declare a variable 'numNeighbours' based on a prompt input like this:
+// prompt('How many neighbour countries does your country
+// have?');
+// 2. If there is only 1 neighbour, log to the console 'Only 1 border!' (use loose equality
+// == for now)
+// 3. Use an else-if block to log 'More than 1 border' in case 'numNeighbours'
+// is greater than 1
+// 4. Use an else block to log 'No borders' (this block will be executed when
+// 'numNeighbours' is 0 or any other value)
+// 5. Test the code with different values of 'numNeighbours', including 1 and 0.
+// 6. Change == to ===, and test the code again, with the same values of
+// 'numNeighbours'. Notice what happens when there is exactly 1 border! Why
+// is this happening?
+// 7. Finally, convert 'numNeighbours' to a number, and watch what happens now
+// when you input 1
+// 8. Reflect on why we should use the === operator and type conversion in this
+// situation
+
+const numNeighbours = Number(prompt('How many neighbour countries does your country have?'));
+
+if (numNeighbours === 1) {
+    console.log('Only 1 border!');
+}
+else if (numNeighbours >= 1) {
+    console.log('More than 1 border');
+}
+else {
+    console.log('No borders');
+}
+*/
+
+/*
+// LECTURE: Logical Operators
+// 1. Comment out the previous code so the prompt doesn't get in the way
+// 2. Let's say Sarah is looking for a new country to live in. She wants to live in a
+// country that speaks english, has less than 50 million people and is not an
+// island.
+// 3. Write an if statement to help Sarah figure out if your country is right for her.
+// You will need to write a condition that accounts for all of Sarah's criteria. Take
+// your time with this, and check part of the solution if necessary.
+// 4. If yours is the right country, log a string like this: 'You should live in Portugal :)'. If
+// not, log 'Portugal does not meet your criteria :('
+// 5. Probably your country does not meet all the criteria. So go back and temporarily
+// change some variables in order to make the condition true (unless you live in
+// Canada :D)
+
+const country = 'Norway';
+const language = 'Norwegian';
+const population = 15;
+const isIsland = false;
+
+if (language === 'English' && population < 50 && !isIsland) {
+    console.log(`You should live in ${country} :)`);
+}
+else {
+    console.log(`${country} does not meet your criteria :(`);
+}
+*/
+
+// Coding Challenge #3
+// There are two gymnastics teams, Dolphins and Koalas. They compete against each
+// other 3 times. The winner with the highest average score wins a trophy!
+// Your tasks:
+// 1. Calculate the average score for each team, using the test data below
+// 2. Compare the team's average scores to determine the winner of the competition,
+// and print it to the console. Don't forget that there can be a draw, so test for that
+// as well (draw means they have the same average score)
+// 3. Bonus 1: Include a requirement for a minimum score of 100. With this rule, a
+// team only wins if it has a higher score than the other team, and the same time a
+// score of at least 100 points. Hint: Use a logical operator to test for minimum
+// score, as well as multiple else-if blocks
+// 4. Bonus 2: Minimum score also applies to a draw! So a draw only happens when
+// both teams have the same score and both have a score greater or equal 100
+// points. Otherwise, no team wins the trophy
+// Test data:
+// § Data 1: Dolphins score 96, 108 and 89. Koalas score 88, 91 and 110
+// § Data Bonus 1: Dolphins score 97, 112 and 101. Koalas score 109, 95 and 123
+// § Data Bonus 2: Dolphins score 97, 112 and 101. Koalas score 109, 95 and 106
+// GOOD LUCK 
+
+const firstTeam = 'Dolphins';
+const secondTeam = 'Koalas';
+
+const averageScoreDolphins = ((96 + 108 + 89) / 3).toFixed(2);
+const averageScoreKoalas = ((88 + 91 + 110) / 3).toFixed(2);
+console.log(averageScoreDolphins, averageScoreKoalas);
+const averageScoreReq = 100;
+
+if (averageScoreDolphins > averageScoreKoalas
+    && averageScoreDolphins >= averageScoreReq) {
+    console.log(`${firstTeam} wins with score ${averageScoreDolphins}`);
+} else if (averageScoreKoalas > averageScoreDolphins
+    && averageScoreKoalas >= averageScoreReq) {
+    console.log(`${secondTeam} wins with score ${averageScoreKoalas}`);
+} else if (averageScoreDolphins === averageScoreKoalas
+    && averageScoreDolphins >= averageScoreReq
+    && averageScoreKoalas >= averageScoreReq) {
+    console.log(`${firstTeam}(${averageScoreDolphins}) and ${secondTeam}(${averageScoreKoalas}) has the same result. Both teams win a trophy`);
+} else {
+    console.log('Draw')
 }
