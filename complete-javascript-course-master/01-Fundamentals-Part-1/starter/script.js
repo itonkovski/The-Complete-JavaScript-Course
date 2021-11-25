@@ -341,6 +341,7 @@ const result = population >= 33 ? `${country}'s population is above average` : `
 console.log(result);
 */
 
+/*
 // Coding Challenge #4
 // Steven wants to build a very simple tip calculator for whenever he goes eating in a
 // restaurant. In his country, it's usual to tip 15% if the bill value is between 50 and
@@ -358,10 +359,11 @@ console.log(result);
 // Hints:
 // § To calculate 20% of a value, simply multiply it by 20/100 = 0.2
 // § Value X is between 50 and 300, if it's >= 50 && <= 300 �
-// GOOD LUCK 
+// GOOD LUCK
 
 const billAmmount = 350;
 
 const tip = billAmmount >= 50 && billAmmount <= 300 ? billAmmount * 0.15 : billAmmount * 0.2;
 
 console.log(`The bill was ${billAmmount}, the tip was ${tip}, and the total value ${billAmmount + tip}`);
+*/
