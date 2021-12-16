@@ -27,3 +27,46 @@ const restaurant = {
     },
   },
 };
+
+// The Spread Operator (...)
+// const {
+//   thu: { open: ThOpen, close: ThClose },
+//   fri: { open: FrOpen, close: FrClose },
+// } = restaurant.openingHours;
+
+// console.log(ThOpen, ThClose);
+// console.log(FrOpen, ThClose);
+
+// const mainMenu = [...restaurant.starterMenu, ...restaurant.mainMenu];
+// console.log(mainMenu);
+
+// const newRestaurant = {
+//   founder: 'Gennaro',
+//   ...restaurant,
+//   style: 'Rustic Italian Cusine',
+// };
+// console.log(newRestaurant);
+
+// Rest Pattern and Parameters
+// const sumUpNumbers = function (...numbers) {
+//   let sum = 0;
+//   for (let i = 0; i < numbers.length; i++) {
+//     sum += numbers[i];
+//   }
+//   console.log(sum);
+// };
+
+// sumUpNumbers(2, 5);
+// sumUpNumbers(2, 8, 3.4);
+// sumUpNumbers(-2, 80);
+
+// const newInput = [34, 12, 9];
+// sumUpNumbers(...newInput);
+
+// const orderPizza = function (mainIngredient, ...ingredients) {
+//   console.log(mainIngredient);
+//   console.log(ingredients);
+// };
+
+// orderPizza('cheese');
+// orderPizza('cheese', 'shrooms', 'pepper');
