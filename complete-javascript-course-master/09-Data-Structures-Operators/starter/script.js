@@ -22,7 +22,7 @@ const restaurant = {
       close: 23,
     },
     sat: {
-      open: 0, // Open 24 hours
+      open: 12,
       close: 24,
     },
   },
@@ -130,6 +130,7 @@ const game = {
   },
 };
 
+/*
 //Task1
 const [players1, players2] = game.players;
 console.log(players1, players2);
@@ -163,3 +164,27 @@ printGoals(...game.scored);
 //Task7
 team1 < team2 && console.log(`${game.team1} more likely to win.`);
 team1 > team2 && console.log(`${game.team2} more likely to win.`);
+*/
+
+// Looping Objects: Object Keys, Values, and Entries
+
+// Property NAMES
+const props = Object.keys(restaurant.openingHours);
+
+let openStr = `We are open ${props.length} days: `;
+
+for (const day of props) {
+  openStr += `${day}, `;
+}
+console.log(openStr);
+
+// Property VALUES
+const values = Object.values(restaurant.openingHours);
+console.log(values);
+
+const entries = Object.entries(restaurant.openingHours);
+console.log(entries);
+
+for (const [day, { open, close }] of entries) {
+  console.log(`On ${day}, we open at ${open} and close at ${close}`);
+}
