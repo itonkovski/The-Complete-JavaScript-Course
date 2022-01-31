@@ -211,7 +211,6 @@ BONUS: Create an object called 'scorers' which contains the names of the players
       }
 
 GOOD LUCK 😀
-*/
 
 //Task1
 // 1. Loop over the game.scored array and print each player name to the console, along with the goal number (Example: "Goal 1: Lewandowski")
@@ -251,3 +250,30 @@ const scorers = {};
 for (const player of game.scored) {
   scorers[player] ? scorers[player]++ : (scorers[player] = 1);
 }
+*/
+
+// Maps: Iteration
+const quizz = new Map([
+  ['question', 'What is the best programming language in the world?'],
+  [1, 'C'],
+  [2, 'Java'],
+  [3, 'JavaScript'],
+  ['correct', 3],
+  [true, 'Correct.'],
+  [false, 'Try again!'],
+]);
+
+console.log(quizz);
+
+// Convert object to map
+const hoursMap = new Map(Object.entries(restaurant.openingHours));
+console.log(hoursMap);
+
+//Quizz
+console.log(quizz.get('question'));
+for (const [key, value] of quizz) {
+  if (typeof key === 'number') console.log(`Answer ${key} : ${value}`);
+}
+const answer = Number(prompt('Your Answer'));
+console.log(answer);
+console.log(quizz.get(quizz.get('correct') === answer));
