@@ -54,3 +54,41 @@ const flightData = [554, 'Mary Cooper'];
 book.call(euroWings, ...flightData);
 
 console.log(euroWings);
+
+// Bind Method
+const bookLH = book.bind(lufthansa);
+const bookEW = book.bind(euroWings);
+
+bookLH(123, 'Steven Stevenson');
+
+const bookEW234 = book.bind(euroWings, 234);
+bookEW234('Veronica Simpson');
+
+// With Event Listeners
+lufthansa.airplanes = 300;
+lufthansa.buyPlanes = function () {
+  console.log(this);
+  this.airplanes++;
+  console.log(this.airplanes);
+};
+
+document
+  .querySelector('.buy')
+  .addEventListener('click', lufthansa.buyPlanes.bind(lufthansa));
+
+// Partial application
+const addTax = (rate, value) => value + value * rate;
+console.log(addTax(0.1, 200));
+
+const addVAT = addTax.bind(null, 0.23);
+console.log(addVAT(100));
+
+//Function returning function example
+const addTaxRate = function (rate) {
+  return function (value) {
+    return value + value * rate;
+  };
+};
+
+const AddVATNew = addTaxRate(0.23);
+console.log(AddVATNew(100));
