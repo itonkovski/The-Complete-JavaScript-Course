@@ -82,6 +82,18 @@ const inputClosePin = document.querySelector('.form__input--pin');
 
 // displayMovements(account1.movements);
 
+const createUsername = function (accounts) {
+  accounts.forEach(function (account) {
+    account.username = account.owner
+      .toLowerCase()
+      .split(' ')
+      .map(name => name[0])
+      .join('');
+  });
+};
+
+createUsername(accounts);
+
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -111,6 +123,7 @@ currencies.forEach(function (value, key, map) {
 });
 */
 
+/*
 // Coding Challenge #1
 
 // Julia and Kate are doing a study on dogs. So each of them asked 5 dog owners about their dog's age, and stored the data into an array (one array for each). For now, they are just interested in knowing whether a dog is an adult or a puppy. A dog is an adult if it is at least 3 years old, and it's a puppy if it's less than 3 years old.
@@ -145,3 +158,4 @@ const checkDogs = function (dogsJulia, dogsKate) {
 };
 
 checkDogs([3, 5, 2, 12, 7], [4, 1, 15, 8, 3]);
+*/
