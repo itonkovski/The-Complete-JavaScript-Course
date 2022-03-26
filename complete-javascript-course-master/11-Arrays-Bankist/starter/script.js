@@ -106,9 +106,10 @@ createUsername(accounts);
 /////////////////////////////////////////////////
 // LECTURES
 
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
 /*
 // Looping Arrays: forEach
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 movements.forEach(function (mov, i) {
   if (mov > 0) {
@@ -166,3 +167,11 @@ const checkDogs = function (dogsJulia, dogsKate) {
 
 checkDogs([3, 5, 2, 12, 7], [4, 1, 15, 8, 3]);
 */
+
+// The reduce Method
+
+const maxValue = account1.movements.reduce((acc, mov) => {
+  if (acc > mov) return acc;
+  else return mov;
+}, movements[0]);
+console.log(maxValue);
