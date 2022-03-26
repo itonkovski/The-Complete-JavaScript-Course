@@ -61,26 +61,33 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-// const displayMovements = function (movements) {
-//   containerMovements.innerHTML = '';
+const displayMovements = function (movements) {
+  containerMovements.innerHTML = '';
 
-//   movements.forEach(function (mov, i) {
-//     const typeOfMov = mov > 0 ? 'deposit' : 'withdrawal';
+  movements.forEach(function (mov, i) {
+    const typeOfMov = mov > 0 ? 'deposit' : 'withdrawal';
 
-//     const html = `
-//     <div class="movements__row">
-//       <div class="movements__type movements__type--deposit">${
-//         i + 1
-//       } ${typeOfMov}</div>
-//       <div class="movements__value">${mov}</div>
-//     </div>
-//     `;
+    const html = `
+    <div class="movements__row">
+      <div class="movements__type movements__type--deposit">${
+        i + 1
+      } ${typeOfMov}</div>
+      <div class="movements__value">${mov}</div>
+    </div>
+    `;
 
-//     containerMovements.insertAdjacentHTML('afterbegin', html);
-//   });
-// };
+    containerMovements.insertAdjacentHTML('afterbegin', html);
+  });
+};
 
-// displayMovements(account1.movements);
+displayMovements(account1.movements);
+
+const calcDisplayBalance = function (movements) {
+  const balance = movements.reduce((acc, mov) => acc + mov, 0);
+  labelBalance.textContent = `${balance} EUR`;
+};
+
+calcDisplayBalance(account1.movements);
 
 const createUsername = function (accounts) {
   accounts.forEach(function (account) {
