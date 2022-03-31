@@ -362,3 +362,44 @@ const calcAverageHumanAge = function (ages) {
     .reduce((acc, age, i, arr) => acc + age / arr.length);
 };
 */
+
+/////////////////////////
+// Array Methods Practice
+
+//Task 1 - Display all the deposits
+const bankDepositSum = accounts
+  .flatMap(acc => acc.movements)
+  .filter(mov => mov > 0)
+  .reduce((sum, curr) => curr + sum, 0);
+
+console.log(bankDepositSum);
+
+//Task 2 - Display the number of deposits above 1000
+
+//first example
+const numDeposits1000 = accounts
+  .flatMap(acc => acc.movements)
+  .filter(mov => mov >= 1000).length;
+
+console.log(numDeposits1000);
+
+//second example
+const numDeposits1000New = accounts
+  .flatMap(acc => acc.movements)
+  .reduce((count, curr) => (curr >= 1000 ? ++count : count), 0);
+
+console.log(numDeposits1000New);
+
+//Task 3 - Separate all deposits and withdrawals
+const { deposits, withdrawals } = accounts
+  .flatMap(acc => acc.movements)
+  .reduce(
+    (sums, curr) => {
+      // curr > 0 ? (sums.deposits += curr) : (sums.withdrawals += curr);
+      sums[curr > 0 ? 'deposits' : 'withdrawals'] += curr;
+      return sums;
+    },
+    { deposits: 0, withdrawals: 0 }
+  );
+
+console.log(deposits, withdrawals);
