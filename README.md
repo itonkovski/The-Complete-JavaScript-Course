@@ -1,4 +1,4 @@
-Complete JavaScript Course by [@jonasschmedtman](https://twitter.com/jonasschmedtman), [at my website](http://codingheroes.io/resources), (https://github.com/jonasschmedtmann/complete-javascript-course/tree/v1)
+Complete JavaScript Course by [@jonasschmedtman](https://twitter.com/jonasschmedtman), [website](http://codingheroes.io/resources).
 A certificate of completion is provided by Udemy after you complete 100% of the course.
 
 - [Pig Game](https://pig-game-v2.netlify.app) (DOM Manipulation)
