@@ -47,6 +47,11 @@ document
     message.remove();
   });
 
+message.style.backgroundColor = '#37383d';
+message.style.width = '120%';
+message.style.height =
+  Number.parseFloat(getComputedStyle(message).height, 10) + 30 + 'px';
+
 //
 // const html = (
 //   <div class="cookie-message">
