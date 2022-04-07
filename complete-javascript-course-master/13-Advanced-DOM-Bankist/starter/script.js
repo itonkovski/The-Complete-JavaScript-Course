@@ -7,6 +7,8 @@ const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const section1 = document.querySelector('#section--1');
 
 const openModal = function (e) {
   e.preventDefault();
@@ -52,12 +54,7 @@ message.style.width = '120%';
 message.style.height =
   Number.parseFloat(getComputedStyle(message).height, 10) + 30 + 'px';
 
-//
-// const html = (
-//   <div class="cookie-message">
-//     We use cookies for improved functionallity and analytics
-//     <button class="btn btn--close-cookie">Got It!</button>
-//   </div>
-// );
-
-// header.insertAdjacentHTML('afterbegin', html);
+//Scrolling
+btnScrollTo.addEventListener('click', function () {
+  section1.scrollIntoView({ behavior: 'smooth' });
+});
