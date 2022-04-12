@@ -36,26 +36,26 @@ document.addEventListener('keydown', function (e) {
 });
 ///////////////////////
 //Adding cookie message
-const header = document.querySelector('.header');
-const message = document.createElement('div');
-message.classList.add('cookie-message');
+// const header = document.querySelector('.header');
+// const message = document.createElement('div');
+// message.classList.add('cookie-message');
 
-message.innerHTML =
-  'We use cookies for improved functionallity and analytics <button class="btn btn--close-cookie">Got It!</button> ';
+// message.innerHTML =
+//   'We use cookies for improved functionallity and analytics <button class="btn btn--close-cookie">Got It!</button> ';
 
-header.prepend(message);
-// header.append(message);
+// header.prepend(message);
+// // header.append(message);
 
-document
-  .querySelector('.btn--close-cookie')
-  .addEventListener('click', function () {
-    message.remove();
-  });
+// document
+//   .querySelector('.btn--close-cookie')
+//   .addEventListener('click', function () {
+//     message.remove();
+//   });
 
-message.style.backgroundColor = '#37383d';
-message.style.width = '120%';
-message.style.height =
-  Number.parseFloat(getComputedStyle(message).height, 10) + 30 + 'px';
+// message.style.backgroundColor = '#37383d';
+// message.style.width = '120%';
+// message.style.height =
+//   Number.parseFloat(getComputedStyle(message).height, 10) + 30 + 'px';
 
 ///////////
 //Scrolling
@@ -123,3 +123,25 @@ const handleHover = function (e) {
 nav.addEventListener('mouseover', handleHover.bind(0.5));
 
 nav.addEventListener('mouseout', handleHover.bind(1));
+
+///////////////////////////////////////////////
+// Sticky navigation: Intersection Observer API
+
+const header = document.querySelector('.header');
+const navHight = nav.getBoundingClientRect().height;
+
+const stickyNav = function (entries) {
+  const [entry] = entries;
+  // console.log(entry);
+
+  if (!entry.isIntersecting) nav.classList.add('sticky');
+  else nav.classList.remove('sticky');
+};
+
+const headerObserver = new IntersectionObserver(stickyNav, {
+  root: null,
+  threshold: 0,
+  rootMargin: `-${navHight}px`,
+});
+
+headerObserver.observe(header);
