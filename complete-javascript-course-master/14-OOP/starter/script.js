@@ -17,6 +17,7 @@ const ivo = new Person('Ivo', 1987);
 ivo.calcAge();
 */
 
+/*
 //////////////////////
 // Coding Challenge #1
 
@@ -52,3 +53,44 @@ firstCar.accelerate();
 secondCar.accelerate();
 firstCar.brake();
 secondCar.brake();
+*/
+
+/////////////
+//ES6 Classes
+
+class PersonCl {
+  constructor(fullName, birthYear) {
+    (this.fullName = fullName), (this.birthYear = birthYear);
+  }
+
+  calcAge() {
+    const date = new Date().getFullYear();
+    console.log(date - this.birthYear);
+  }
+
+  greet() {
+    console.log(`${this._fullName} says hello.`);
+  }
+
+  set fullName(name) {
+    if (name.includes(' ')) this._fullName = name;
+    else alert(`${name} is incorrect!`);
+  }
+
+  get fullName() {
+    return this._fullName;
+  }
+
+  // Static method
+  static hey() {
+    console.log('Hey there 👋');
+    console.log(this);
+  }
+}
+
+const jessica = new PersonCl('Jessica Davis', 1987);
+const david = new PersonCl('David', 1987);
+console.log(jessica.fullName);
+jessica.calcAge();
+jessica.greet();
+PersonCl.hey();
