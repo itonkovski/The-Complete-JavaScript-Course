@@ -236,6 +236,7 @@ tesla.brake();
 tesla.accelerate();
 */
 
+/*
 /////////////////////////////////////////////
 // Inheritance Between "Classes": ES6 Classes
 
@@ -287,5 +288,37 @@ class StudentCl extends PersonCl {
 }
 
 const student = new StudentCl('Ivo Tonkovski', 2000, 'JavaScript');
+student.introduce();
+student.calcAge();
+*/
+
+///////////////////////////////////////////////
+// Inheritance Between "Classes": Object.create
+
+const PersonProto = {
+  calcAge() {
+    const date = new Date().getFullYear();
+    console.log(date - this.birthYear);
+  },
+
+  init(firstName, birthYear) {
+    this.firstName = firstName;
+    this.birthYear = birthYear;
+  },
+};
+
+const StudentProto = Object.create(PersonProto);
+
+StudentProto.init = function (firstName, birthYear, course) {
+  PersonProto.init.call(this, firstName, birthYear);
+  this.course = course;
+};
+
+StudentProto.introduce = function () {
+  console.log(`Hello my name is ${this.firstName} and I study ${this.course}.`);
+};
+
+const student = Object.create(StudentProto);
+student.init('Ivo', 2000, 'Computer Science');
 student.introduce();
 student.calcAge();
