@@ -181,6 +181,7 @@ Student.prototype.constructor = Student;
 console.dir(Student.prototype.constructor);
 */
 
+/*
 ///////////////////////
 // Coding Challenge #3
 
@@ -233,3 +234,58 @@ tesla.chargeBattery(90);
 console.log(tesla);
 tesla.brake();
 tesla.accelerate();
+*/
+
+/////////////////////////////////////////////
+// Inheritance Between "Classes": ES6 Classes
+
+class PersonCl {
+  constructor(fullName, birthYear) {
+    (this.fullName = fullName), (this.birthYear = birthYear);
+  }
+
+  calcAge() {
+    const date = new Date().getFullYear();
+    console.log(date - this.birthYear);
+  }
+
+  greet() {
+    console.log(`${this._fullName} says hello.`);
+  }
+
+  set fullName(name) {
+    if (name.includes(' ')) this._fullName = name;
+    else alert(`${name} is incorrect!`);
+  }
+
+  get fullName() {
+    return this._fullName;
+  }
+
+  // Static method
+  static hey() {
+    console.log('Hey there 👋');
+  }
+}
+
+class StudentCl extends PersonCl {
+  constructor(fullName, birthYear, course) {
+    super(fullName, birthYear);
+    this.course = course;
+  }
+
+  introduce() {
+    console.log(
+      `Hello my name is ${this.fullName} and I study ${this.course}.`
+    );
+  }
+
+  calcAge() {
+    const date = new Date().getFullYear();
+    console.log(`My age is ${date - this.birthYear}`);
+  }
+}
+
+const student = new StudentCl('Ivo Tonkovski', 2000, 'JavaScript');
+student.introduce();
+student.calcAge();
