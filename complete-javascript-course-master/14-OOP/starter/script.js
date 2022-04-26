@@ -97,6 +97,7 @@ jessica.greet();
 PersonCl.hey();
 */
 
+/*
 ///////////////////////////////////////
 // Coding Challenge #2
 
@@ -141,3 +142,40 @@ firstCar.brake();
 firstCar.speedUS = 100;
 console.log(firstCar);
 console.log(firstCar.speedUS);
+*/
+
+///////////////////////////////////////////////////////
+// Inheritance Between "Classes": Constructor Functions
+
+const Person = function (firstName, birthYear) {
+  this.firstName = firstName;
+  this.birthYear = birthYear;
+};
+
+Person.prototype.calcAge = function () {
+  const date = new Date().getFullYear();
+  console.log(date - this.birthYear);
+};
+
+const Student = function (firstName, birthYear, course) {
+  Person.call(this, firstName, birthYear);
+  this.course = course;
+};
+
+// Linking prototypes
+Student.prototype = Object.create(Person.prototype);
+
+Student.prototype.introduce = function () {
+  console.log(`Hello my name is ${this.firstName} and I study ${this.course}.`);
+};
+
+const ivo = new Student('Ivo', 2000, 'JavaScript');
+ivo.introduce();
+ivo.calcAge();
+
+console.log(ivo instanceof Student);
+console.log(ivo instanceof Person);
+console.log(ivo instanceof Object);
+
+Student.prototype.constructor = Student;
+console.dir(Student.prototype.constructor);
