@@ -295,6 +295,7 @@ student.calcAge();
 ///////////////////////////////////////////////
 // Inheritance Between "Classes": Object.create
 
+/*
 const PersonProto = {
   calcAge() {
     const date = new Date().getFullYear();
@@ -322,3 +323,59 @@ const student = Object.create(StudentProto);
 student.init('Ivo', 2000, 'Computer Science');
 student.introduce();
 student.calcAge();
+*/
+
+//////////////////////////////////////////////////
+// Encapsulation: Private Class Fields and Methods
+
+class Account {
+  //Private fields
+  #pin;
+  #movements = [];
+  constructor(owner, currency, pin) {
+    this.owner = owner;
+    this.currency = currency;
+    this.#pin = pin;
+
+    console.log(`Thanks for opening an account, ${owner}`);
+  }
+
+  getMovements() {
+    return this.#movements;
+  }
+
+  deposit(value) {
+    this.#movements.push(value);
+    return this;
+  }
+
+  withdraw(value) {
+    this.deposit(-value);
+    return this;
+  }
+
+  requestLoan(value) {
+    if (this.#aproveLoan) {
+      this.deposit(value);
+      console.log(`Loan approved`);
+      return this;
+    }
+  }
+
+  //Private methods
+  #aproveLoan(value) {
+    return true;
+  }
+}
+
+const acc1 = new Account('Ivo', 'EUR', 1111);
+
+acc1.deposit(250);
+acc1.withdraw(140);
+acc1.requestLoan(1000);
+console.log(acc1.getMovements());
+console.log(acc1);
+
+// Chaining
+acc1.deposit(300).deposit(500).withdraw(35).requestLoan(25000).withdraw(4000);
+console.log(acc1.getMovements());
