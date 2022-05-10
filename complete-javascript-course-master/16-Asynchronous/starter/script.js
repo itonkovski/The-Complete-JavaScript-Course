@@ -5,17 +5,9 @@ const countriesContainer = document.querySelector('.countries');
 
 ///////////////////////////////////////
 
-const getCountryData = function (country) {
-  const request = new XMLHttpRequest();
-  request.open('GET', `https://restcountries.com/v2/name/${country}`);
-  request.send();
-
-  request.addEventListener('load', function () {
-    const [data] = JSON.parse(this.responseText);
-    console.log(data);
-
-    const html = `
-      <article class="country">
+const renderCountry = function (data, className = '') {
+  const html = `
+      <article class="country ${className}">
           <img class="country__img" src="${data.flag}" />
               <div class="country__data">
                 <h3 class="country__name">${data.name}</h3>
@@ -33,10 +25,41 @@ const getCountryData = function (country) {
       </article>
     `;
 
-    countriesContainer.insertAdjacentHTML('beforeend', html);
-    countriesContainer.style.opacity = 1;
+  countriesContainer.insertAdjacentHTML('beforeend', html);
+  countriesContainer.style.opacity = 1;
+};
+
+const getCountryAndNeighbour = function (country) {
+  //AJAX Call for main country
+  const request = new XMLHttpRequest();
+  request.open('GET', `https://restcountries.com/v2/name/${country}`);
+  request.send();
+
+  request.addEventListener('load', function () {
+    const [data] = JSON.parse(this.responseText);
+    console.log(data);
+
+    //Render main country
+    renderCountry(data);
+
+    //Get neighbour country
+    const neighbour = data.borders?.[0];
+
+    if (!neighbour) return;
+
+    //AJAX Call for neighbour country
+    const requestNeighbour = new XMLHttpRequest();
+    requestNeighbour.open(
+      'GET',
+      `https://restcountries.com/v2/alpha/${neighbour}`
+    );
+    requestNeighbour.send();
+
+    requestNeighbour.addEventListener('load', function () {
+      const dataNeighbour = JSON.parse(this.responseText);
+      renderCountry(dataNeighbour, 'neighbour');
+    });
   });
 };
 
-getCountryData('Norway');
-getCountryData('Bulgaria');
+getCountryAndNeighbour('Norway');
