@@ -170,6 +170,7 @@ getCountryData('Australia');
 //////////////////////
 // Coding Challenge #1
 
+/*
 // In this challenge you will build a function 'whereAmI' which renders a country ONLY based on GPS coordinates. For that, you will use a second API to geocode coordinates.
 
 // Here are your tasks:
@@ -195,7 +196,6 @@ getCountryData('Australia');
 const whereAmI = function (lat, lng) {
   fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`)
     .then(res => {
-      console.log(res);
       if (!res.ok)
         throw new Error(`There is a problem with geocoding(${res.status})`);
       return res.json();
@@ -211,9 +211,50 @@ const whereAmI = function (lat, lng) {
       return res.json();
     })
     .then(data => renderCountry(data[0]))
-    .catch(err => console.log(`${`Something went wrong! ${err.message}`}`));
+    .catch(err => console.error(`${`Something went wrong! ${err.message}`}`));
 };
 
 whereAmI(52.508, 13.381);
-// whereAmI(19.037, 72.873);
-// whereAmI(-33.933, 18.474);
+whereAmI(19.037, 72.873);
+whereAmI(-33.933, 18.474);
+*/
+
+////////////////////////////
+// Building a Simple Promise
+
+const lotteryPromise = new Promise(function (resolve, reject) {
+  console.log('Lottery draw started....');
+  setTimeout(function () {
+    if (Math.random() >= 0.5) {
+      resolve('You win. 💰');
+    } else {
+      reject(new Error('You lost. 👎🏼'));
+    }
+  }, 2000);
+});
+
+lotteryPromise.then(res => console.log(res)).catch(err => console.error(err));
+
+// Promisifying setTimeout
+const wait = function (seconds) {
+  return new Promise(function (resolve) {
+    setTimeout(resolve, seconds * 1000);
+  });
+};
+
+wait(1)
+  .then(() => {
+    console.log('1 second passed');
+    return wait(1);
+  })
+  .then(() => {
+    console.log('2 second passed');
+    return wait(1);
+  })
+  .then(() => {
+    console.log('3 second passed');
+    return wait(1);
+  })
+  .then(() => {
+    console.log('4 second passed');
+  });
