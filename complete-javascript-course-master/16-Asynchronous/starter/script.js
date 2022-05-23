@@ -29,6 +29,7 @@ const renderCountry = function (data, className = '') {
 
 const renderError = function (msg) {
   countriesContainer.insertAdjacentText('beforeend', msg);
+  countriesContainer.style.opacity = 1;
 };
 
 const getJSON = function (url, errorMsg = 'Something went wrong.') {
@@ -372,6 +373,7 @@ createImage('img/img-1.jpg')
 
 //////////////////////////////////////
 // Consuming Promises with Async/Await
+// Error Handling With try...catch
 
 const getPosition = function () {
   return new Promise(function (resolve, reject) {
@@ -385,22 +387,33 @@ const getPosition = function () {
 };
 
 const whereAmI = async function () {
-  //Geolocation
-  const pos = await getPosition();
-  const { latitude: lat, longitude: lng } = pos.coords;
+  try {
+    //Geolocation
+    const pos = await getPosition();
+    const { latitude: lat, longitude: lng } = pos.coords;
 
-  //Reverse geocoding
-  const resGeo = await fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`);
-  const dataGeo = await resGeo.json();
-  console.log(dataGeo);
+    //Reverse geocoding
+    const resGeo = await fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`);
 
-  //Country data
-  const res = await fetch(
-    `https://restcountries.com/v2/name/${dataGeo.country}`
-  );
-  const dataRes = await res.json();
-  console.log(dataRes);
-  renderCountry(dataRes[0]);
+    if (!resGeo.ok) throw new Error('Not able to get geolocation data.');
+
+    const dataGeo = await resGeo.json();
+    console.log(dataGeo);
+
+    //Country data
+    const res = await fetch(
+      `https://restcountries.com/v2/name/${dataGeo.country}`
+    );
+
+    if (!res.ok) throw new Error('Country not found.');
+
+    const dataRes = await res.json();
+    console.log(dataRes);
+    renderCountry(dataRes[0]);
+  } catch (err) {
+    console.error(`❌ ${err}`);
+    renderError(`❌ ${err.message}`);
+  }
 };
 
 whereAmI();
