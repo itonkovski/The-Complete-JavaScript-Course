@@ -262,7 +262,7 @@ wait(1)
 
 ///////////////////////////////////
 // Promisifying the Geolocation API
-
+/*
 const getPosition = function () {
   return new Promise(function (resolve, reject) {
     // navigator.geolocation.getCurrentPosition(
@@ -302,10 +302,11 @@ const whereAmI = function () {
 };
 
 btn.addEventListener('click', whereAmI);
+*/
 
 ///////////////////////////////////////
 // Coding Challenge #2
-
+/*
 // PART 1
 // 1. Create a function 'createImage' which receives imgPath as an input. This function returns a promise which creates a new image (use document.createElement('img')) and sets the .src attribute to the provided image path. When the image is done loading, append it to the DOM element with the 'images' class, and resolve the promise. The fulfilled value should be the image element itself. In case there is an error loading the image ('error' event), reject the promise.
 
@@ -367,3 +368,39 @@ createImage('img/img-1.jpg')
     currentImg.style.display = 'none';
   })
   .catch(err => console.error(err));
+*/
+
+//////////////////////////////////////
+// Consuming Promises with Async/Await
+
+const getPosition = function () {
+  return new Promise(function (resolve, reject) {
+    // navigator.geolocation.getCurrentPosition(
+    //   position => resolve(position),
+    //   err => reject(err)
+    // );
+
+    navigator.geolocation.getCurrentPosition(resolve, reject);
+  });
+};
+
+const whereAmI = async function () {
+  //Geolocation
+  const pos = await getPosition();
+  const { latitude: lat, longitude: lng } = pos.coords;
+
+  //Reverse geocoding
+  const resGeo = await fetch(`https://geocode.xyz/${lat},${lng}?geoit=json`);
+  const dataGeo = await resGeo.json();
+  console.log(dataGeo);
+
+  //Country data
+  const res = await fetch(
+    `https://restcountries.com/v2/name/${dataGeo.country}`
+  );
+  const dataRes = await res.json();
+  console.log(dataRes);
+  renderCountry(dataRes[0]);
+};
+
+whereAmI();
