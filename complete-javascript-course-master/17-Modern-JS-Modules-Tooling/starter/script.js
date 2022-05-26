@@ -16,3 +16,18 @@ add('bread', 5);
 add('milk', 5);
 
 console.log(cart);
+
+//Top Level await
+const getLastPost = async function () {
+  const res = await fetch('https://jsonplaceholder.typicode.com/posts');
+  const data = await res.json();
+  //   console.log(data);
+
+  return { title: data.at(-1).title, text: data.at(-1).body };
+};
+
+//Not very clean
+// const lastPost = getLastPost().then(post => console.log(post));
+
+const lastPost2 = await getLastPost();
+console.log(lastPost2);
