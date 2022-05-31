@@ -1,6 +1,6 @@
 //Importing module
 // import { addToCart, totalPrice as price, totalQ } from './shoppingCart.js';
-// console.log('Importing module');
+console.log('Importing module');
 
 // addToCart('bread', 5);
 // console.log(price, totalQ);
@@ -10,12 +10,12 @@
 // ShoppingCart.addToCart('bread', 5);
 
 //Not recomended to import named and default imports together
-// import add, { cart } from './shoppingCart.js';
-// add('cheese', 5);
-// add('bread', 5);
-// add('milk', 5);
+import add, { cart } from './shoppingCart.js';
+add('cheese', 5);
+add('bread', 5);
+add('milk', 5);
 
-// console.log(cart);
+console.log(cart);
 
 /////////////////
 //Top Level await
@@ -71,7 +71,9 @@ console.log(ShoppingCart2.shippingCost);
 
 ///////////////////////
 // Introduction to NPM
-import cloneDeep from './node_modules/lodash-es/cloneDeep.js';
+// import cloneDeep from './node_modules/lodash-es/cloneDeep.js';
+//imports with parcel don´t need to be so specific
+import cloneDeep from 'lodash-es';
 
 const state = {
   cart: [
@@ -87,3 +89,7 @@ state.user.loggedIn = false;
 console.log(stateClone);
 
 console.log(stateDeepClone);
+
+if (module.hot) {
+  module.hot.accept();
+}
