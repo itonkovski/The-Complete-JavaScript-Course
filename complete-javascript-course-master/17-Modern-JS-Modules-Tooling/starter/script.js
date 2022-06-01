@@ -1,3 +1,7 @@
+import 'core-js/stable';
+// Polifilling async functions
+import 'regenerator-runtime/runtime';
+
 //Importing module
 // import { addToCart, totalPrice as price, totalQ } from './shoppingCart.js';
 console.log('Importing module');
