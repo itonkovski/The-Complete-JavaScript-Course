@@ -20,7 +20,7 @@ export default class View {
     const curElements = Array.from(this._parentElement.querySelectorAll('*'));
     newElements.forEach((newEl, i) => {
       const curEl = curElements[i];
-      console.log(curEl, newEl.isEqualNode(curEl));
+      //   console.log(curEl, newEl.isEqualNode(curEl));
       //Update changed TEXT
       if (
         !newEl.isEqualNode(curEl) &&
@@ -31,7 +31,7 @@ export default class View {
       //Update changed Attributes
       if (!newEl.isEqualNode(curEl)) {
         Array.from(newEl.attributes).forEach(attr =>
-          curEl.setAttribute(attr.namr, attr.value)
+          curEl.setAttribute(attr.name, attr.value)
         );
       }
     });
