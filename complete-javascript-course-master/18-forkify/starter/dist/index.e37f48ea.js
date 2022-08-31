@@ -281,7 +281,7 @@ function removeErrorOverlay() {
     var overlay = document.getElementById(OVERLAY_ID);
     if (overlay) {
         overlay.remove();
-        console.log("[parcel] \u2728 Error resolved");
+        console.log("[parcel] ✨ Error resolved");
     }
 }
 function createErrorOverlay(diagnostics) {
@@ -452,23 +452,23 @@ function hmrApply(bundle, asset) {
         } else if (bundle.parent) hmrApply(bundle.parent, asset);
     }
 }
-function hmrDelete(bundle, id1) {
+function hmrDelete(bundle, id) {
     let modules = bundle.modules;
     if (!modules) return;
-    if (modules[id1]) {
+    if (modules[id]) {
         // Collect dependencies that will become orphaned when this module is deleted.
-        let deps = modules[id1][1];
+        let deps = modules[id][1];
         let orphans = [];
         for(let dep in deps){
             let parents = getParents(module.bundle.root, deps[dep]);
             if (parents.length === 1) orphans.push(deps[dep]);
         } // Delete the module. This must be done before deleting dependencies in case of circular dependencies.
-        delete modules[id1];
-        delete bundle.cache[id1]; // Now delete the orphans.
+        delete modules[id];
+        delete bundle.cache[id]; // Now delete the orphans.
         orphans.forEach((id)=>{
             hmrDelete(module.bundle.root, id);
         });
-    } else if (bundle.parent) hmrDelete(bundle.parent, id1);
+    } else if (bundle.parent) hmrDelete(bundle.parent, id);
 }
 function hmrAcceptCheck(bundle, id, depsByBundle) {
     if (hmrAcceptCheckOne(bundle, id, depsByBundle)) return true;
@@ -554,6 +554,7 @@ const controlRecipes = async function() {
         (0, _recipeViewJsDefault.default).renderSpinner();
         //Update results view to mark selected search result
         (0, _resultsViewJsDefault.default).update(_modelJs.getSearchResultPage());
+        //Update bookmark view
         (0, _bookmarksViewJsDefault.default).update(_modelJs.state.bookmarks);
         //Loading Recipe
         await _modelJs.loadRecipe(id);
@@ -601,16 +602,21 @@ const controlAddBookmark = function() {
     //Render bookmarks
     (0, _bookmarksViewJsDefault.default).render(_modelJs.state.bookmarks);
 };
+const controlBookmarks = function() {
+    (0, _bookmarksViewJsDefault.default).render(_modelJs.state.bookmarks);
+};
 const init = function() {
+    (0, _bookmarksViewJsDefault.default).addHandlerRender(controlBookmarks);
     (0, _recipeViewJsDefault.default).addHandlerRender(controlRecipes);
     (0, _recipeViewJsDefault.default).addHandlerUpdateServings(controlServings);
     (0, _recipeViewJsDefault.default).addHandlerAddBookmark(controlAddBookmark);
     (0, _searchViewJsDefault.default).addHandlerSearch(controlSearchResults);
     (0, _paginationViewDefault.default).addHandlerClick(controlPagination);
+// addRecipeView._addHandlerShowWindow(controlAddRecipe);
 };
 init();
 
-},{"core-js/modules/web.immediate.js":"49tUX","./model.js":"Y4A21","./views/recipeView.js":"l60JC","./views/searchView.js":"9OQAM","./views/resultsView.js":"cSbZE","./views/paginationView":"6z7bi","regenerator-runtime/runtime":"dXNgZ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./views/bookmarksView.js":"4Lqzq"}],"49tUX":[function(require,module,exports) {
+},{"core-js/modules/web.immediate.js":"49tUX","./model.js":"Y4A21","./views/recipeView.js":"l60JC","./views/searchView.js":"9OQAM","./views/resultsView.js":"cSbZE","./views/paginationView":"6z7bi","./views/bookmarksView.js":"4Lqzq","regenerator-runtime/runtime":"dXNgZ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"49tUX":[function(require,module,exports) {
 // TODO: Remove this module from `core-js@4` since it's split to modules listed below
 require("../modules/web.clear-immediate");
 require("../modules/web.set-immediate");
@@ -822,12 +828,20 @@ module.exports = function(it) {
 };
 
 },{"../internals/function-uncurry-this":"7GlkT"}],"fOR0B":[function(require,module,exports) {
+var isNullOrUndefined = require("../internals/is-null-or-undefined");
 var $TypeError = TypeError;
 // `RequireObjectCoercible` abstract operation
 // https://tc39.es/ecma262/#sec-requireobjectcoercible
 module.exports = function(it) {
-    if (it == undefined) throw $TypeError("Can't call method on " + it);
+    if (isNullOrUndefined(it)) throw $TypeError("Can't call method on " + it);
     return it;
+};
+
+},{"../internals/is-null-or-undefined":"gM5ar"}],"gM5ar":[function(require,module,exports) {
+// we can't use just `it == null` since of `document.all` special case
+// https://tc39.es/ecma262/#sec-IsHTMLDDA-internal-slot-aec
+module.exports = function(it) {
+    return it === null || it === undefined;
 };
 
 },{}],"5XWKd":[function(require,module,exports) {
@@ -867,7 +881,12 @@ module.exports = function(input, pref) {
 
 },{"../internals/function-call":"d7JlP","../internals/is-object":"Z0pBo","../internals/is-symbol":"4aV4F","../internals/get-method":"9Zfiw","../internals/ordinary-to-primitive":"7MME2","../internals/well-known-symbol":"gTwyA"}],"Z0pBo":[function(require,module,exports) {
 var isCallable = require("../internals/is-callable");
-module.exports = function(it) {
+var documentAll = typeof document == "object" && document.all;
+// https://tc39.es/ecma262/#sec-IsHTMLDDA-internal-slot
+var SPECIAL_DOCUMENT_ALL = typeof documentAll == "undefined" && documentAll !== undefined;
+module.exports = SPECIAL_DOCUMENT_ALL ? function(it) {
+    return typeof it == "object" ? it !== null : isCallable(it) || it === documentAll;
+} : function(it) {
     return typeof it == "object" ? it !== null : isCallable(it);
 };
 
@@ -906,10 +925,10 @@ var uncurryThis = require("../internals/function-uncurry-this");
 module.exports = uncurryThis({}.isPrototypeOf);
 
 },{"../internals/function-uncurry-this":"7GlkT"}],"2Ye8Q":[function(require,module,exports) {
-/* eslint-disable es-x/no-symbol -- required for testing */ var NATIVE_SYMBOL = require("../internals/native-symbol");
+/* eslint-disable es-x/no-symbol -- required for testing */ var NATIVE_SYMBOL = require("../internals/symbol-constructor-detection");
 module.exports = NATIVE_SYMBOL && !Symbol.sham && typeof Symbol.iterator == "symbol";
 
-},{"../internals/native-symbol":"grUXC"}],"grUXC":[function(require,module,exports) {
+},{"../internals/symbol-constructor-detection":"8KyTD"}],"8KyTD":[function(require,module,exports) {
 /* eslint-disable es-x/no-symbol -- required for testing */ var V8_VERSION = require("../internals/engine-v8-version");
 var fails = require("../internals/fails");
 // eslint-disable-next-line es-x/no-object-getownpropertysymbols -- required for testing
@@ -952,14 +971,15 @@ module.exports = getBuiltIn("navigator", "userAgent") || "";
 
 },{"../internals/get-built-in":"6ZUSY"}],"9Zfiw":[function(require,module,exports) {
 var aCallable = require("../internals/a-callable");
+var isNullOrUndefined = require("../internals/is-null-or-undefined");
 // `GetMethod` abstract operation
 // https://tc39.es/ecma262/#sec-getmethod
 module.exports = function(V, P) {
     var func = V[P];
-    return func == null ? undefined : aCallable(func);
+    return isNullOrUndefined(func) ? undefined : aCallable(func);
 };
 
-},{"../internals/a-callable":"gOMir"}],"gOMir":[function(require,module,exports) {
+},{"../internals/a-callable":"gOMir","../internals/is-null-or-undefined":"gM5ar"}],"gOMir":[function(require,module,exports) {
 var isCallable = require("../internals/is-callable");
 var tryToString = require("../internals/try-to-string");
 var $TypeError = TypeError;
@@ -999,7 +1019,7 @@ var global = require("../internals/global");
 var shared = require("../internals/shared");
 var hasOwn = require("../internals/has-own-property");
 var uid = require("../internals/uid");
-var NATIVE_SYMBOL = require("../internals/native-symbol");
+var NATIVE_SYMBOL = require("../internals/symbol-constructor-detection");
 var USE_SYMBOL_AS_UID = require("../internals/use-symbol-as-uid");
 var WellKnownSymbolsStore = shared("wks");
 var Symbol = global.Symbol;
@@ -1015,16 +1035,16 @@ module.exports = function(name) {
     return WellKnownSymbolsStore[name];
 };
 
-},{"../internals/global":"i8HOC","../internals/shared":"i1mHK","../internals/has-own-property":"gC2Q5","../internals/uid":"a3SEE","../internals/native-symbol":"grUXC","../internals/use-symbol-as-uid":"2Ye8Q"}],"i1mHK":[function(require,module,exports) {
+},{"../internals/global":"i8HOC","../internals/shared":"i1mHK","../internals/has-own-property":"gC2Q5","../internals/uid":"a3SEE","../internals/symbol-constructor-detection":"8KyTD","../internals/use-symbol-as-uid":"2Ye8Q"}],"i1mHK":[function(require,module,exports) {
 var IS_PURE = require("../internals/is-pure");
 var store = require("../internals/shared-store");
 (module.exports = function(key, value) {
     return store[key] || (store[key] = value !== undefined ? value : {});
 })("versions", []).push({
-    version: "3.22.8",
+    version: "3.25.0",
     mode: IS_PURE ? "pure" : "global",
     copyright: "\xa9 2014-2022 Denis Pushkarev (zloirock.ru)",
-    license: "https://github.com/zloirock/core-js/blob/v3.22.8/LICENSE",
+    license: "https://github.com/zloirock/core-js/blob/v3.25.0/LICENSE",
     source: "https://github.com/zloirock/core-js"
 });
 
@@ -1188,7 +1208,7 @@ module.exports = function(argument) {
 
 },{"../internals/is-object":"Z0pBo"}],"6XwEX":[function(require,module,exports) {
 var isCallable = require("../internals/is-callable");
-var createNonEnumerableProperty = require("../internals/create-non-enumerable-property");
+var definePropertyModule = require("../internals/object-define-property");
 var makeBuiltIn = require("../internals/make-built-in");
 var defineGlobalProperty = require("../internals/define-global-property");
 module.exports = function(O, key, value, options) {
@@ -1200,15 +1220,22 @@ module.exports = function(O, key, value, options) {
         if (simple) O[key] = value;
         else defineGlobalProperty(key, value);
     } else {
-        if (!options.unsafe) delete O[key];
-        else if (O[key]) simple = true;
+        try {
+            if (!options.unsafe) delete O[key];
+            else if (O[key]) simple = true;
+        } catch (error) {}
         if (simple) O[key] = value;
-        else createNonEnumerableProperty(O, key, value);
+        else definePropertyModule.f(O, key, {
+            value: value,
+            enumerable: false,
+            configurable: !options.nonConfigurable,
+            writable: !options.nonWritable
+        });
     }
     return O;
 };
 
-},{"../internals/is-callable":"l3Kyn","../internals/create-non-enumerable-property":"8CL42","../internals/make-built-in":"cTB4k","../internals/define-global-property":"ggjnO"}],"cTB4k":[function(require,module,exports) {
+},{"../internals/is-callable":"l3Kyn","../internals/object-define-property":"iJR4w","../internals/make-built-in":"cTB4k","../internals/define-global-property":"ggjnO"}],"cTB4k":[function(require,module,exports) {
 var fails = require("../internals/fails");
 var isCallable = require("../internals/is-callable");
 var hasOwn = require("../internals/has-own-property");
@@ -1230,10 +1257,13 @@ var makeBuiltIn = module.exports = function(value, name, options) {
     if (String(name).slice(0, 7) === "Symbol(") name = "[" + String(name).replace(/^Symbol\(([^)]*)\)/, "$1") + "]";
     if (options && options.getter) name = "get " + name;
     if (options && options.setter) name = "set " + name;
-    if (!hasOwn(value, "name") || CONFIGURABLE_FUNCTION_NAME && value.name !== name) defineProperty(value, "name", {
-        value: name,
-        configurable: true
-    });
+    if (!hasOwn(value, "name") || CONFIGURABLE_FUNCTION_NAME && value.name !== name) {
+        if (DESCRIPTORS) defineProperty(value, "name", {
+            value: name,
+            configurable: true
+        });
+        else value.name = name;
+    }
     if (CONFIGURABLE_LENGTH && options && hasOwn(options, "arity") && value.length !== options.arity) defineProperty(value, "length", {
         value: options.arity
     });
@@ -1282,7 +1312,7 @@ if (!isCallable(store.inspectSource)) store.inspectSource = function(it) {
 module.exports = store.inspectSource;
 
 },{"../internals/function-uncurry-this":"7GlkT","../internals/is-callable":"l3Kyn","../internals/shared-store":"l4ncH"}],"7AMlF":[function(require,module,exports) {
-var NATIVE_WEAK_MAP = require("../internals/native-weak-map");
+var NATIVE_WEAK_MAP = require("../internals/weak-map-basic-detection");
 var global = require("../internals/global");
 var uncurryThis = require("../internals/function-uncurry-this");
 var isObject = require("../internals/is-object");
@@ -1311,7 +1341,7 @@ if (NATIVE_WEAK_MAP || shared.state) {
     var wmhas = uncurryThis(store.has);
     var wmset = uncurryThis(store.set);
     set = function(it, metadata) {
-        if (wmhas(store, it)) throw new TypeError(OBJECT_ALREADY_INITIALIZED);
+        if (wmhas(store, it)) throw TypeError(OBJECT_ALREADY_INITIALIZED);
         metadata.facade = it;
         wmset(store, it, metadata);
         return metadata;
@@ -1326,7 +1356,7 @@ if (NATIVE_WEAK_MAP || shared.state) {
     var STATE = sharedKey("state");
     hiddenKeys[STATE] = true;
     set = function(it, metadata) {
-        if (hasOwn(it, STATE)) throw new TypeError(OBJECT_ALREADY_INITIALIZED);
+        if (hasOwn(it, STATE)) throw TypeError(OBJECT_ALREADY_INITIALIZED);
         metadata.facade = it;
         createNonEnumerableProperty(it, STATE, metadata);
         return metadata;
@@ -1346,14 +1376,13 @@ module.exports = {
     getterFor: getterFor
 };
 
-},{"../internals/native-weak-map":"7LdJl","../internals/global":"i8HOC","../internals/function-uncurry-this":"7GlkT","../internals/is-object":"Z0pBo","../internals/create-non-enumerable-property":"8CL42","../internals/has-own-property":"gC2Q5","../internals/shared-store":"l4ncH","../internals/shared-key":"eAjGz","../internals/hidden-keys":"661m4"}],"7LdJl":[function(require,module,exports) {
+},{"../internals/weak-map-basic-detection":"2PZTl","../internals/global":"i8HOC","../internals/function-uncurry-this":"7GlkT","../internals/is-object":"Z0pBo","../internals/create-non-enumerable-property":"8CL42","../internals/has-own-property":"gC2Q5","../internals/shared-store":"l4ncH","../internals/shared-key":"eAjGz","../internals/hidden-keys":"661m4"}],"2PZTl":[function(require,module,exports) {
 var global = require("../internals/global");
 var isCallable = require("../internals/is-callable");
-var inspectSource = require("../internals/inspect-source");
 var WeakMap = global.WeakMap;
-module.exports = isCallable(WeakMap) && /native code/.test(inspectSource(WeakMap));
+module.exports = isCallable(WeakMap) && /native code/.test(String(WeakMap));
 
-},{"../internals/global":"i8HOC","../internals/is-callable":"l3Kyn","../internals/inspect-source":"9jh7O"}],"eAjGz":[function(require,module,exports) {
+},{"../internals/global":"i8HOC","../internals/is-callable":"l3Kyn"}],"eAjGz":[function(require,module,exports) {
 var shared = require("../internals/shared");
 var uid = require("../internals/uid");
 var keys = shared("keys");
@@ -1772,11 +1801,15 @@ const updateServings = function(newServings) {
     });
     state.recipe.servings = newServings;
 };
+persistBookmarks = function() {
+    localStorage.setItem("bookmarks", JSON.stringify(state.bookmarks));
+};
 const addBookmark = function(recipe) {
     //Add Bookmark
     state.bookmarks.push(recipe);
     //Mark current recipe as bookmarked
     if (recipe.id === state.recipe.id) state.recipe.bookmarked = true;
+    persistBookmarks();
 };
 const deleteBookmark = function(id) {
     //Delete Bookmark
@@ -1784,7 +1817,16 @@ const deleteBookmark = function(id) {
     state.bookmarks.splice(index, 1);
     //Mark current recipe as NOT bookmarked
     if (id === state.recipe.id) state.recipe.bookmarked = false;
+    persistBookmarks();
 };
+const init = function() {
+    const storage = localStorage.getItem("bookmarks");
+    if (storage) state.bookmarks = JSON.parse(storage);
+};
+init();
+const clearBookmarks = function() {
+    localStorage.clear("bookmarks");
+}; // clearBookmarks();
 
 },{"regenerator-runtime":"dXNgZ","./config":"k5Hzs","./helpers":"hGI1E","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"dXNgZ":[function(require,module,exports) {
 /**
@@ -1813,7 +1855,7 @@ const deleteBookmark = function(id) {
     try {
         // IE 8 has a broken Object.defineProperty that only works on DOM objects.
         define({}, "");
-    } catch (err1) {
+    } catch (err) {
         define = function(obj, key, value) {
             return obj[key] = value;
         };
@@ -1925,13 +1967,13 @@ const deleteBookmark = function(id) {
             if (record.type === "throw") reject(record.arg);
             else {
                 var result = record.arg;
-                var value1 = result.value;
-                if (value1 && typeof value1 === "object" && hasOwn.call(value1, "__await")) return PromiseImpl.resolve(value1.__await).then(function(value) {
+                var value = result.value;
+                if (value && typeof value === "object" && hasOwn.call(value, "__await")) return PromiseImpl.resolve(value.__await).then(function(value) {
                     invoke("next", value, resolve, reject);
                 }, function(err) {
                     invoke("throw", err, resolve, reject);
                 });
-                return PromiseImpl.resolve(value1).then(function(unwrapped) {
+                return PromiseImpl.resolve(value).then(function(unwrapped) {
                     // When a yielded Promise is resolved, its final value becomes
                     // the .value of the Promise<{value,done}> result for the
                     // current iteration.
@@ -2149,7 +2191,7 @@ const deleteBookmark = function(id) {
     }
     exports.keys = function(object) {
         var keys = [];
-        for(var key1 in object)keys.push(key1);
+        for(var key in object)keys.push(key);
         keys.reverse();
         // Rather than returning an object with a next method, we keep
         // things simple and return the next function itself.
@@ -2175,7 +2217,7 @@ const deleteBookmark = function(id) {
             if (iteratorMethod) return iteratorMethod.call(iterable);
             if (typeof iterable.next === "function") return iterable;
             if (!isNaN(iterable.length)) {
-                var i = -1, next1 = function next() {
+                var i = -1, next = function next() {
                     while(++i < iterable.length)if (hasOwn.call(iterable, i)) {
                         next.value = iterable[i];
                         next.done = false;
@@ -2185,7 +2227,7 @@ const deleteBookmark = function(id) {
                     next.done = true;
                     return next;
                 };
-                return next1.next = next1;
+                return next.next = next;
             }
         }
         // Return an iterator with no values.
@@ -2623,7 +2665,7 @@ class View {
 }
 exports.default = View;
 
-},{"url:../../img/icons.svg":"loVOp","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","regenerator-runtime":"dXNgZ"}],"loVOp":[function(require,module,exports) {
+},{"regenerator-runtime":"dXNgZ","url:../../img/icons.svg":"loVOp","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"loVOp":[function(require,module,exports) {
 module.exports = require("./helpers/bundle-url").getBundleURL("hWUTQ") + "icons.dfd7a6db.svg" + "?" + Date.now();
 
 },{"./helpers/bundle-url":"lgJ39"}],"lgJ39":[function(require,module,exports) {
@@ -2901,14 +2943,14 @@ Fraction.prototype.equals = function(b) {
 // Adapted from: 
 // http://www.btinternet.com/~se16/js/factor.htm
 Fraction.primeFactors = function(n) {
-    var num = Math.abs(n);
+    var num1 = Math.abs(n);
     var factors = [];
     var _factor = 2; // first potential prime factor
-    while(_factor * _factor <= num)if (num % _factor === 0) {
+    while(_factor * _factor <= num1)if (num1 % _factor === 0) {
         factors.push(_factor); // so keep it
-        num = num / _factor; // and divide our search point by it
+        num1 = num1 / _factor; // and divide our search point by it
     } else _factor++; // and increment
-    if (num != 1) factors.push(num); //    so it too should be recorded
+    if (num1 != 1) factors.push(num1); //    so it too should be recorded
     return factors; // Return the prime factors
 };
 module.exports.Fraction = Fraction;
@@ -2954,7 +2996,7 @@ class ResultsView extends (0, _viewDefault.default) {
 }
 exports.default = new ResultsView();
 
-},{"./View":"5cUXS","url:../../img/icons.svg":"loVOp","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./previewView.js":"1FDQ6"}],"1FDQ6":[function(require,module,exports) {
+},{"./View":"5cUXS","./previewView.js":"1FDQ6","url:../../img/icons.svg":"loVOp","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"1FDQ6":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _view = require("./View");
@@ -3054,12 +3096,15 @@ class BookmarksView extends (0, _viewDefault.default) {
     _parentElement = document.querySelector(".bookmarks__list");
     _errorMessage = "No bookmarks were found yet. Find a nice recipe and bookmark it.";
     _message = "";
+    addHandlerRender(handler) {
+        window.addEventListener("load", handler);
+    }
     _generateMarkup() {
         return this._data.map((bookmark)=>(0, _previewViewJsDefault.default).render(bookmark, false)).join("");
     }
 }
 exports.default = new BookmarksView();
 
-},{"./View":"5cUXS","url:../../img/icons.svg":"loVOp","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./previewView.js":"1FDQ6"}]},["fA0o9","aenu9"], "aenu9", "parcelRequire3a11")
+},{"./View":"5cUXS","./previewView.js":"1FDQ6","url:../../img/icons.svg":"loVOp","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["fA0o9","aenu9"], "aenu9", "parcelRequire3a11")
 
 //# sourceMappingURL=index.e37f48ea.js.map
