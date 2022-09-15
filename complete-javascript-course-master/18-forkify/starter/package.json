@@ -13,10 +13,10 @@
     "parcel": "^2.7.0"
   },
   "dependencies": {
-    "core-js": "^3.25.0",
+    "core-js": "^3.25.1",
     "fractional": "^1.0.0",
     "node-modules": "^1.0.1",
     "regenerator-runtime": "^0.13.9",
-    "sass": "^1.52.2"
+    "sass": "^1.54.9"
   }
 }
