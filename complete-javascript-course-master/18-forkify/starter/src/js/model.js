@@ -83,7 +83,7 @@ export const updateServings = function (newServings) {
   state.recipe.servings = newServings;
 };
 
-persistBookmarks = function () {
+const persistBookmarks = function () {
   localStorage.setItem('bookmarks', JSON.stringify(state.bookmarks));
 };
 
